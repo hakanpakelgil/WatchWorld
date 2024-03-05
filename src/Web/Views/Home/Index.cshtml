@@ -1,8 +1,8 @@
-﻿
-@model HomeViewModel
+﻿@model HomeViewModel
 
 @{
     ViewData["Title"] = "Home Page";
+    var pi = Model.PaginationInfo;
 }
 
 <div class="card mb-3">
@@ -52,3 +52,53 @@
         </div>
     }       
 </div>
+<p class="text-center mt-2 text-secondary">
+    Showing @pi.RangeStart - @pi.RangeEnd of @pi.TotalItems
+</p>
+<nav aria-label="Page navigation example">    
+    <ul class="pagination justify-content-center">
+        @if (pi.HasPrevious)
+        {
+            <li class="page-item">
+                <a asp-route-CategoryId="@Model.CategoryId" asp-route-BrandId="@Model.BrandId" asp-route-PageId="@(pi.PageId - 1)" class="page-link" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <a class="page-link"><span aria-hidden="true">&laquo;</span></a>
+            </li>
+        }
+        @foreach (var i in pi.PageNumbers)
+        {
+            if(i == -1)
+            {
+                <li class="page-item disabled">
+                    <a class="page-link"><span aria-hidden="true">&hellip;</span></a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item @(i == pi.PageId ? "active" : "")">
+                    <a asp-route-CategoryId="@Model.CategoryId" asp-route-BrandId="@Model.BrandId" asp-route-PageId="@i" class="page-link">@i</a>
+                </li>
+            }
+        }        
+        @if (pi.HasNext)
+        {
+            <li class="page-item">
+                <a asp-route-CategoryId="@Model.CategoryId" asp-route-BrandId="@Model.BrandId" asp-route-PageId="@(pi.PageId + 1)" class="page-link" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <a class="page-link"><span aria-hidden="true">&raquo;</span></a>
+            </li>
+        }
+    </ul>
+</nav>
