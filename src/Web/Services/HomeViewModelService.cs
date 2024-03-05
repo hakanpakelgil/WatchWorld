@@ -1,6 +1,7 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Web.Interfaces;
 using Web.Models;
@@ -22,7 +23,11 @@ namespace Web.Services
         public async Task<HomeViewModel> GetHomeViewModelAsync(int? categoryId, int? brandId, int pageId)
         {
             var specProducts = new CatalogFilterSpecifications(categoryId, brandId);
-            var products = await _productRepo.GetAllAsync(specProducts);
+            var totalItems = await _productRepo.CountAsync(specProducts);   
+            
+            var specProductsPaginated = new CatalogFilterSpecifications(categoryId, brandId, (pageId - 1) * Constants.ITEMS_PER_PAGE, Constants.ITEMS_PER_PAGE);            
+            
+            var products = await _productRepo.GetAllAsync(specProductsPaginated);
 
             var vm = new HomeViewModel()
             {
@@ -36,7 +41,13 @@ namespace Web.Services
                     PictureUri = x.PictureUri ?? "noimage.jpg"
                 }).ToList(),
                 Brands = (await _brandRepo.GetAllAsync()).Select(x=> new SelectListItem(x.Name, x.Id.ToString())).ToList(),
-                Categories = (await _categoryRepo.GetAllAsync()).Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList()
+                Categories = (await _categoryRepo.GetAllAsync()).Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList(),
+                PaginationInfo = new PaginationInfoViewModel()
+                {
+                    TotalItems = totalItems,
+                    ItemsOnPage = products.Count,
+                    PageId = pageId
+                }
             };
 
             return vm;
