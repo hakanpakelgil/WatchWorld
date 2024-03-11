@@ -6,5 +6,6 @@ namespace Web.Interfaces
     {
         public Task<BasketViewModel> GetBasketViewModelAsync();
         public Task<BasketViewModel> AddItemToBasketAsync(int productId, int quantity);
+        public Task EmptyBasketAsync();
     }
 }

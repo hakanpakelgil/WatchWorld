@@ -61,7 +61,7 @@ namespace ApplicationCore.Services
         {
             var basket = await GetOrCreateBasketAsync(buyerId);
 
-            foreach(var item in basket.BasketItems)
+            foreach(var item in basket.BasketItems.ToList())
             {
                 await _basketItemRepo.DeleteAsync(item);
             }
