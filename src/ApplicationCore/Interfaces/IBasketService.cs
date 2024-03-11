@@ -14,6 +14,6 @@ namespace ApplicationCore.Interfaces
         public Task<Basket> SetQuantitiesAsync(string buyerId,Dictionary<int,int> quantities);
         public Task DeleteBasketItemAsync(string buyerId,int productId);
         public Task EmptyBasketAsync(string buyerId);
-        public Task TransferBasketAsync(string sourceBuyerId, string destinationBuyerId);
+        public Task TransferBasketAsync(string sourceBuyerId, string destinationBuyerId);        
     }
 }

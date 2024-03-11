@@ -51,10 +51,10 @@ namespace ApplicationCore.Services
             var basket = await GetOrCreateBasketAsync(buyerId);
             var basketItem = basket.BasketItems.FirstOrDefault(b => b.ProductId == productId);
 
-            if(basketItem != null)
+            if (basketItem != null)
             {
                 await _basketItemRepo.DeleteAsync(basketItem);
-            }
+            }            
         }
 
         public async Task EmptyBasketAsync(string buyerId)
@@ -79,7 +79,7 @@ namespace ApplicationCore.Services
             }
 
             return basket;
-        }
+        }        
 
         public async Task<Basket> SetQuantitiesAsync(string buyerId, Dictionary<int, int> quantities)
         {
