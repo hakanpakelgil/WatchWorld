@@ -61,13 +61,14 @@ namespace Web.Controllers
             var vm = new CheckoutViewModel()
             {
                 Basket = basket
-            };     
+            };
+            
             return View(vm);
         }                 
                              
         [Authorize,HttpPost,ValidateAntiForgeryToken]
         public async Task<IActionResult> Checkout(CheckoutViewModel vm)
-        {
+        {            
             if(ModelState.IsValid)
             {
                 await _basketViewModelService.CheckoutAsync(vm.Street,vm.City,vm.State,vm.Country,vm.ZipCode);
